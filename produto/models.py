@@ -1,6 +1,4 @@
-from django.contrib.admin.decorators import display
 from django.template.loader import get_template
-from django.utils.safestring import mark_safe
 from django.db import models
 from utils.images import resize_image
 from utils.rands import slugify_new
