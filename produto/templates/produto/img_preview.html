@@ -1,0 +1,41 @@
+<img
+  src="{% if src %}{{ src }}{% else %}http://atrilco.com/wp-content/uploads/2017/11/ef3-placeholder-image.jpg{% endif %}"
+  id="image-thumbnail-{{ field_name }}"
+  width="500px"
+>
+
+<script>
+  // Vainilla javascript 🚀 (Babel defaults, not ie 11, not ie_mob 11)
+
+  // This function adds an event listener over the input image field (`my_field_image`).
+  // If the user edits that field, the preview image will be updated.
+  function changeThumbnail() {
+    const fieldName = "{{ field_name }}";
+    document
+      .getElementById(`id_${fieldName}`)
+      .addEventListener("change", function (e) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById(`image-thumbnail-${fieldName}`).src = e.target.result;
+        };
+        reader.readAsDataURL(this.files[0]);
+      });
+  }
+
+  // This function executes a callback when the document is ready.
+  // https://stackoverflow.com/questions/9899372
+  //
+  // Is this required?
+  // No, but, in most cases, the image preview is rendered above the input field,
+  // as we do in the `admin.py` module.
+  // In that case, need to wait for the document to be ready before adding the
+  // event listener defined in `changeThumbnail`.
+  function docReady(fn) {
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      setTimeout(fn, 1);
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
+    }
+  }
+   docReady(changeThumbnail);
+</script>

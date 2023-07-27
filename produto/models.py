@@ -1,6 +1,6 @@
-import os
-from django.conf import settings
-from django.utils.html import mark_safe
+from django.contrib.admin.decorators import display
+from django.template.loader import get_template
+from django.utils.safestring import mark_safe
 from django.db import models
 from utils.images import resize_image
 from utils.rands import slugify_new
@@ -31,11 +31,13 @@ class Produto(models.Model):
         ),
     )
 
+
     def img_preview(self): 
-        return mark_safe('<img src = "{url}" width = "300"/>'.format(
-             url = self.imagem.url
-            )
-        )
+        return get_template('produto/img_preview.html').render({
+        'field_name': 'imagem',
+        'src': self.imagem.url if self.imagem else None,
+        }
+    )
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
@@ -49,7 +51,7 @@ class Produto(models.Model):
             imagem_changed = current_imagem_name != self.imagem.name
 
         if imagem_changed:
-            resize_image(self.imagem, 900, True, 70)
+            resize_image(self.imagem, 800, True, 70)
 
         return super_save
        
