@@ -1,8 +1,11 @@
+import re
 from django.db import models
 from utils.states import estados
 from django.contrib.auth.models import User
+from utils.validador_cpf import valida_cpf
+from django.forms import ValidationError
 
-
+error_messages = {}
 class PerfilUsuario(models.Model):
     class Meta:
         verbose_name = 'Perfil'
@@ -17,6 +20,16 @@ class PerfilUsuario(models.Model):
 
     def __str__(self):
         return f'{self.usuario}'
+    
+    def clean(self):
+        if not valida_cpf(self.cpf):
+            error_messages['cpf'] = 'Digite um CPF válido'
+        
+        if error_messages:
+            raise ValidationError(error_messages)
+
+        return super().clean()
+
 
 
 class Endereco(models.Model):
@@ -34,4 +47,13 @@ class Endereco(models.Model):
 
     def __str__(self):
         return f'Endereço {self.numero}'
+    
+    def clean(self):
+        if re.search(r'[^0-9]', self.cep) or len(self.cep) < 8:
+            error_messages['cep'] = 'CEP inválido, digite os 8 digitos do CEP'
+
+        if error_messages:
+            raise ValidationError(error_messages)
+
+        return super().clean()
 
