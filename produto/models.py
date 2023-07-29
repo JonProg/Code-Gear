@@ -39,7 +39,7 @@ class Produto(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
-            self.slug = slugify_new(self.title, 4)
+            self.slug = slugify_new(self.nome, 4)
 
         current_imagem_name = str(self.imagem.name)
         super_save = super().save(*args, **kwargs)
