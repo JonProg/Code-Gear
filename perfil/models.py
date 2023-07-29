@@ -22,6 +22,7 @@ class PerfilUsuario(models.Model):
 
 class Endereco(models.Model):
     perfil_usuario = models.ForeignKey(PerfilUsuario, on_delete=models.CASCADE)
+    nome = models.CharField(max_length=100)
     endereco = models.CharField(max_length=50)
     numero = models.CharField(max_length=5)
     complemento = models.CharField(max_length=30)
@@ -34,5 +35,5 @@ class Endereco(models.Model):
     )
 
     def __str__(self):
-        return f'Endereço {self.cidade}, {self.numero}'
+        return f'Endereço {self.nome}'
 
