@@ -32,3 +32,7 @@ class Endereco(models.Model):
         max_length=2,
         choices = estados
     )
+
+    def __str__(self):
+        return f'Endereço {self.cidade}, {self.numero}'
+
