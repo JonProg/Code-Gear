@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block conteudo %}
+{% load omfilters %}
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card-columns">
@@ -7,22 +9,30 @@
                 {% for produto in produtos %}
                     <div class="card">
                         {% if produto.imagem %}
+                        <a href="{% url 'produto:detalhe' produto.slug %}">
                             <img class="card-img-top" src="{{ produto.imagem.url }}" alt="Card image cap">
+                        </a>
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ produto.nome }}</h5>
-                            <p class="card-text">{{ descricao_curta }}</p>
+                            <p class="card-text">{{ produto.descricao_curta }}</p>
                             <div class="container product-price-block text-center">
-                                <span class="product-price">
-                                    {{ produto.preco_marketing_promocional }}
-                                </span>
-                                <span class="product-old-price text-muted">
-                                    {{ produto.preco_marketing }}
-                                </span>
+                                {% if produto.preco_marketing_promocional %}
+                                    <span class="product-price">
+                                        {{ produto.preco_marketing_promocional | formata_preco }}
+                                    </span>
+                                    <span class="product-old-price text-muted">
+                                        {{ produto.preco_marketing | formata_preco}}
+                                    </span>
+                                {% else %}
+                                    <span class="product-price">
+                                        {{ produto.preco_marketing | formata_preco}}
+                                    </span>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="card-footer bg-transparent border-top-light-custom text-center">
-                            <a href="post.html" class="btn btn-primary btn-sm m-1 btn-block">
+                            <a href="{% url 'produto:detalhe' produto.slug %}" class="btn btn-primary btn-sm m-1 btn-block">
                                 <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                                 Comprar
                             </a>
@@ -32,4 +42,9 @@
             </div>
         </div>
     </div>
+<div class="row mt-3">
+    <div class="col">
+        {% include 'partials/_pagination.html' %}
+    </div>
+</div>
 {% endblock conteudo %}

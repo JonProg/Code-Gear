@@ -2,6 +2,7 @@ from django.template.loader import get_template
 from django.db import models
 from utils.images import resize_image
 from utils.rands import slugify_new
+from utils.functions import format_price
 
 class Produto(models.Model):
     nome = models.CharField(max_length=255)
@@ -31,11 +32,11 @@ class Produto(models.Model):
     )
 
     def get_preco_formatado(self):
-        return f'R$ {self.preco_marketing:.2f}'.replace('.',',')
+        return format_price(self.preco_marketing)
     get_preco_formatado.short_description = 'Preço'
 
     def get_preco_promocional(self):
-        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.',',')
+        return format_price(self.preco_marketing_promocional)
     get_preco_promocional.short_description = 'Preço Promo.'
 
     def save(self, *args, **kwargs) -> None:
