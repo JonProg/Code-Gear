@@ -1,9 +1,16 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views import View
+from . import models
 
 class ListaProdutos(ListView):
-    pass
+    model = models.Produto
+    template_name = 'produto/lista_produtos.html'
+    context_object_name = 'produtos'
+
+    def get_context_data(self,**kwargs):
+
+        return super().get_context_data(**kwargs)
 
 class DetalheProduto(DetailView):
     pass
