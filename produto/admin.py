@@ -14,12 +14,11 @@ class VariacaoInline(admin.TabularInline):
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
     readonly_fields = ['img_preview']
-    list_display = 'id','nome', 'is_published',
+    list_display = 'nome', 'get_preco_formatado', 'get_preco_promocional',
     list_display_links = 'nome',
     list_per_page = 10
     ordering = '-id',
-    list_filter = 'preco_marketing', 'is_published',
-    list_editable = 'is_published',
+    list_filter = 'preco_marketing',
     prepopulated_fields = {
         "slug": ('nome',),
     }

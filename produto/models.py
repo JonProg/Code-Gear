@@ -10,9 +10,17 @@ class Produto(models.Model):
     imagem = models.ImageField(
         upload_to='produto_imagens/%Y/%m/'
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     preco_marketing = models.FloatField(default=0)
     preco_marketing_promocional = models.FloatField(default=0)
+
+    def img_preview(self): 
+        return get_template('produto/img_preview.html').render({
+        'field_name': 'imagem',
+        'src': self.imagem.url if self.imagem else None,
+        }
+    )
+
     tipo = models.CharField(
         default='V',
         max_length=1,
@@ -21,21 +29,14 @@ class Produto(models.Model):
             ('S', 'Simples'),
         )
     )
-    is_published = models.BooleanField(
-        default=False,
-        help_text=(
-            'Este campo precisará estar marcado '
-            'para o post ser exibido publicamente.'
-        ),
-    )
 
+    def get_preco_formatado(self):
+        return f'R$ {self.preco_marketing:.2f}'.replace('.',',')
+    get_preco_formatado.short_description = 'Preço'
 
-    def img_preview(self): 
-        return get_template('produto/img_preview.html').render({
-        'field_name': 'imagem',
-        'src': self.imagem.url if self.imagem else None,
-        }
-    )
+    def get_preco_promocional(self):
+        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.',',')
+    get_preco_promocional.short_description = 'Preço Promo.'
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
