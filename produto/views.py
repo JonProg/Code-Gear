@@ -8,12 +8,11 @@ class ListaProdutos(ListView):
     context_object_name = 'produtos'
     paginate_by = 10
 
-    def get_context_data(self,**kwargs):
-
-        return super().get_context_data(**kwargs)
-
 class DetalheProduto(DetailView):
-    pass
+    model = models.Produto
+    template_name = 'produto/detalhe.html'
+    context_object_name = 'produto'
+    slug_url_kwarg = 'slug'
 
 class AddCarrinho(View):
     pass
