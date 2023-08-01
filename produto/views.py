@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import resolve_url, redirect, get_object_or_404
+from django.http import HttpResponse
 from django.contrib import messages
 from django.views import View
 from . import models
@@ -43,9 +44,9 @@ class AddCarrinho(View):
             pass
         else:
             pass
+
+        return HttpResponse(f'{variacao.produto} {variacao.nome}')
         
-
-
 
 class RemoveCarrinho(View):
     pass
