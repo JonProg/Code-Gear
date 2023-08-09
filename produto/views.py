@@ -113,6 +113,9 @@ class RemoveCarrinho(View):
             return redirect(http_referer)
         
         if not self.request.session.get('carrinho'):
+            return redirect(http_referer) 
+        
+        if variacao_id not in self.request.session['carrinho']:
             return redirect(http_referer)
 
         produto = self.request.session['carrinho'][variacao_id]
