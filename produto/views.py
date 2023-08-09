@@ -93,7 +93,7 @@ class AddCarrinho(View):
 
         messages.success(
             self.request,
-            f'Produto {produto_nome}{variacao_nome} adicionado ao seu'
+            f'Produto {produto_nome} {variacao_nome} adicionado ao seu '
             f'carrinho {carrinho[variacao_id]["quantidade"]}x.'
         )
 
@@ -107,7 +107,7 @@ class RemoveCarrinho(View):
             resolve_url('produto:lista')
         )
 
-        variacao_id =self.request.GET.get('vid')
+        variacao_id = self.request.GET.get('vid')
 
         if not variacao_id:
             return redirect(http_referer)
@@ -120,13 +120,13 @@ class RemoveCarrinho(View):
 
         produto = self.request.session['carrinho'][variacao_id]
 
-        messages.success(
+        messages.info(
             self.request,
             f'Produto {produto["produto_nome"]} {produto["variacao_nome"]} '
-            'removido do seu carrinho'
+            f'removido do seu carrinho'
         )
 
-        del produto
+        del self.request.session['carrinho'][variacao_id]
         self.request.session.save()
         return redirect(http_referer)
 
@@ -138,5 +138,5 @@ class Carrinho(ListView):
             }
         return render(self.request, 'produto/carrinho.html', context)
 
-class Finalizar(View):
+class ResumoCompra(View):
     pass

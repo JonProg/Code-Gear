@@ -3,6 +3,7 @@
 {% load static %}
 {% block conteudo %}
 
+{% if carrinho %}
     <div class="row mt-3">
         <div class="col">
             <h3>Carrinho de compras</h3>
@@ -27,7 +28,7 @@
                                 <a href="{% url 'produto:detalhe' item.slug %}">
                                     {{ item.produto_nome }}
                                 </a>
-                                <a class="ml-3" href="{% url 'produto:removecarrinho' %}?vid={{ item.variacao_id }}">
+                                <a class="ml-3" href="{% url 'produto:removerdocarrinho' %}?vid={{ item.variacao_id }}">
                                     <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -64,7 +65,7 @@
                 <table class="table">
                     <tr>
                         <td class="font-weight-bold">Total</td>
-                        <td>R$100000</td>
+                        <td>{{ carrinho|cart_total|formata_preco }}</td>
                     </tr>
                 </table>
             </div>
@@ -75,5 +76,15 @@
             </a>
         </div>
     </div>
+
+{% else %}
+
+<div class="row mt-3">
+    <div class="col">
+        <h3>Carrinho Vazio</h3>
+        <p class="lead">Não há produtos no seu carrinho.</p>
+    </div>
+</div>
+{% endif %}
 
 {% endblock conteudo %}

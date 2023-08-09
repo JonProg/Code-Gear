@@ -1,12 +1,18 @@
 from django import template
-from utils.functions import format_price, cart_total_qtd
+from utils import functions
 
 register = template.Library()
 
 @register.filter
 def formata_preco(val):
-    return format_price(val)
+    return functions.format_price(val)
 
 @register.filter
 def qtd_total(carrinho):
-    return cart_total_qtd(carrinho)
+    return functions.cart_total_qtd(carrinho)
+
+@register.filter
+def cart_total(carrinho):
+    return functions.cart_total(carrinho)
+
+
