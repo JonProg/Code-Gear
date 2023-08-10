@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% block conteudo %}
 
 <div class="row">
@@ -9,8 +8,16 @@
     </div>
     <div class="col-lg">
         <h1>Cadastro</h1>
-        <form action="" method="post">
-            {{ userform|crispy_form }}
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ userform|crispy }}
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class='btn btn-primary btn-block btn-lg'>
+                        Enviar
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

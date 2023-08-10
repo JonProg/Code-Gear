@@ -4,7 +4,7 @@ from . import models
 
 class PerfilForm(forms.ModelForm):
     class Meta:
-        models = models.PerfilUsuario
+        model = models.PerfilUsuario
         fields = '__all__'
         exclude = ('usuario',)
 
@@ -28,7 +28,7 @@ class UserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'passwword', 'password2', 'email')
+        fields = ('first_name', 'last_name', 'username', 'password', 'password2', 'email')
     
     def clean(self,*args, **kwargs):
         data = self.data
@@ -49,8 +49,19 @@ class UserForm(forms.ModelForm):
         error_msg_password_short = 'Sua senha precisa de pelo menos 6 caracteres'
 
         if self.usuario:
-            pass
+            if self.usuario_db:
+                validation_error_msgs['username'] = error_msg_user_exists
+            
+            if password_data:
+                if password_data != password2_data:
+                    validation_error_msgs['password'] = error_msg_password_match
+            
+                if len(password_data) < 6:
+                    validation_error_msgs['password'] = error_msg_password_short
         else:
             pass
+
+        if validation_error_msgs:
+            raise(forms.ValidationError(validation_error_msgs))
 
 

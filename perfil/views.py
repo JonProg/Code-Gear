@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from . import models
-from . import forms
+from . import models, forms
 
 class BasePerfil(View):
     template_name = 'perfil/criar.html'
@@ -17,8 +16,8 @@ class BasePerfil(View):
                     #instance = self.request.user,
                 ),
                 'perfilform': forms.PerfilForm(
-                    data = self.request.POST or None
-                )
+                    data = self.request.POST or None,
+                ),
             }
 
         else:
