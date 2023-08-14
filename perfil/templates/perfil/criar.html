@@ -8,13 +8,17 @@
     </div>
     <div class="col-lg">
         {% if request.user.is_authenticated %}
-            <h1>Atualizar</h1>
+            <h1>Atualizar Dados</h1>
         {% else %}
             <h1>Cadastro</h1>
         {% endif %}
         <form action="" method="post">
             {% csrf_token %}
             {{ userform|crispy }}
+            {{ perfilform|crispy }}
+            {% if enderecoform %}
+                {{ enderecoform|crispy }}
+            {% endif %}
             <div class="row">
                 <div class="col">
                     <button type="submit" class='btn btn-primary btn-block btn-lg'>

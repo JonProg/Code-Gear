@@ -2,22 +2,15 @@ from django import forms
 from django.contrib.auth.models import User
 from . import models
 
-class PerfilForm(forms.ModelForm):
-    class Meta:
-        model = models.PerfilUsuario
-        fields = '__all__'
-        exclude = ('usuario',)
-
-
 class UserForm(forms.ModelForm):
     password = forms.CharField(
-        required=False,
+        required = False,
         widget= forms.PasswordInput(),
         label = 'Senha',
     )
 
     password2 = forms.CharField(
-        required=True,
+        required=False,
         widget= forms.PasswordInput(),
         label = 'Confirmação senha',
     )
@@ -47,14 +40,16 @@ class UserForm(forms.ModelForm):
         error_msg_email_exists = 'E-mail já existe'
         error_msg_password_match = 'As duas senhas não conferem.'
         error_msg_password_short = 'Sua senha precisa de pelo menos 6 caracteres'
+        error_msg_required_field = 'Este campo é obrigatório'
 
         if self.usuario:
             if usuario_db:
-                if usuario_data != usuario_db.username:
+                if usuario_data != self.usuario.username:
                     validation_error_msgs['username'] = error_msg_user_exists
 
             if email_db:
-                validation_error_msgs['email'] = error_msg_email_exists
+                if email_data != self.usuario.email:
+                    validation_error_msgs['email'] = error_msg_email_exists
             
             if password_data:
                 if password_data != password2_data:
@@ -64,9 +59,46 @@ class UserForm(forms.ModelForm):
                     validation_error_msgs['password'] = error_msg_password_short
 
         else:
-            validation_error_msgs['username'] = 'teste'
+            if usuario_db:
+                validation_error_msgs['username'] = error_msg_user_exists
+
+            if email_db:
+                validation_error_msgs['email'] = error_msg_email_exists
+
+            if not password_data or password2_data:
+                validation_error_msgs['password'] = error_msg_required_field
+                validation_error_msgs['password2'] = error_msg_required_field
+
+            if password_data:
+                if password_data != password2_data:
+                    validation_error_msgs['password2'] = error_msg_password_match
+            
+                if len(password_data) < 6:
+                    validation_error_msgs['password'] = error_msg_password_short
 
         if validation_error_msgs:
             raise(forms.ValidationError(validation_error_msgs))
+
+
+class PerfilForm(forms.ModelForm):
+    data_nascimento = forms.DateField(
+        required = True,
+        widget = forms.DateInput(
+            attrs = {
+                'type':'date'
+            }
+        ),
+        label = 'Data Nascimento',
+    )
+    class Meta:
+        model = models.PerfilUsuario
+        fields = ('idade', 'data_nascimento', 'cpf')
+
+
+class EnderecoForm(forms.ModelForm):
+    class Meta:
+        model = models.Endereco
+        fields = '__all__'
+        exclude = ('perfil_usuario',)
 
 
