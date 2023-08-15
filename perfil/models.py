@@ -33,7 +33,6 @@ class PerfilUsuario(models.Model):
         return super().clean()
 
 
-
 class Endereco(models.Model):
     perfil_usuario = models.ForeignKey(PerfilUsuario, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=50)

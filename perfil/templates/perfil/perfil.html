@@ -4,25 +4,16 @@
 
 <div class="row">
     <div class="col-lg">
-        <h1>Login</h1>
-    </div>
-    <div class="col-lg">
-        <h1>Cadastro</h1>
+        <h2>Atualizar Cadastro</h2>
         <form action="" method="post">
             {% csrf_token %}
             {{ userform|crispy }}
-            <br>
-            <h2>Perfil</h2>
+            <h2>Atualizar Perfil</h2>
             {{ perfilform|crispy }}
-            {% if enderecoform %}
-                <br>
-                <h2>Endereço</h2>
-                {{ enderecoform|crispy }}
-            {% endif %}
             <div class="row">
                 <div class="col">
                     <button type="submit" class='btn btn-primary btn-block btn-lg'>
-                        Enviar
+                        Atualizar
                     </button>
                 </div>
             </div>
