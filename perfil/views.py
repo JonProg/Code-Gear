@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -63,6 +63,9 @@ class BasePerfil(View):
         self.userform = self.contexto['userform']
         self.perfilform = self.contexto['perfilform']
         self.enderecoform = self.contexto['enderecoform']
+
+        if self.request.user.is_authenticated:
+            self.template_name = 'perfil/atualizar.html'
         
         self.renderizar = render(
             self.request, self.template_name, self.contexto
@@ -76,6 +79,7 @@ class Create(BasePerfil):
         if not all([self.userform.is_valid(), self.perfilform.is_valid(), self.enderecoform.is_valid()]):
             return self.renderizar
         
+        type_created = ''
         username = self.userform.cleaned_data.get('username')
         password = self.userform.cleaned_data.get('password')
         email = self.userform.cleaned_data.get('email')
@@ -102,15 +106,21 @@ class Create(BasePerfil):
                 perfil = models.PerfilUsuario(**self.perfilform.cleaned_data)
                 perfil.save()
 
-            if not self.endereco:
-                self.enderecoform.cleaned_data['perfil_usuario'] = self.perfil
-                endereco = models.Endereco(**self.enderecoform.cleaned_data)
-                endereco.save()
-
             else:
                 perfil = self.perfilform.save(commit=False)
                 perfil.usuario = usuario
                 perfil.save()
+
+            if not self.endereco:
+                self.enderecoform.cleaned_data['perfil_usuario'] = self.perfil
+                endereco = models.Endereco(**self.enderecoform.cleaned_data)
+                endereco.save()
+            
+            else:
+                endereco = self.enderecoform.save(commit=False)
+                endereco.perfil_usuario = self.perfil
+                endereco.save()
+
 
         else:
             usuario = self.userform.save(commit=False)
@@ -137,7 +147,16 @@ class Create(BasePerfil):
         
         self.request.session['carrinho'] = self.carrinho
         self.request.session.save()
-        return self.renderizar
+        messages.success(
+            self.request,
+            'Seu cadastro foi criado ou atualizado com sucesso \(0_0*)/'
+        )
+
+        messages.success(
+            self.request,
+            'Você fez login e pode concluir sua compra.'
+        )
+        return redirect('perfil:create')
 
 
 class Enderecos(View):

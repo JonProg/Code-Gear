@@ -4,29 +4,42 @@
 
 <div class="row">
     {% if not request.user.is_authenticated %}
-        <div class="col-lg">
-            <h1>Login</h1>
+        <div class="col-lg mt-3">
+            <h2>Login</h2>
+            <p>Se você já fez cadastro, basta entrar com seu usuário e senha abaixo:</p>
+            <form method="post" action="{% url 'perfil:login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="InputUsuario1">Usuário</label>
+                  <input type="text" name='username' class="form-control" id="InputUsuario1" aria-describedby="usuarioHelp"
+                    placeholder="Digite usuário">
+                </div>
+                <div class="form-group">
+                  <label for="InputPassword1">Senha</label>
+                  <input type="password" name='password' class="form-control" id="InputPassword1" placeholder="Digite sua senha">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Entrar</button>
+              </form>
         </div>
     {% endif %}
-    <div class="col-lg">
-        {% if request.user.is_authenticated %}
-            <h1>Atualizar Usuário/Perfil</h1>
-            <br><br>
-        <h2>Usuário</h2>
-        {% else %}
-            <h1>Cadastro</h1>
-        {% endif %}
+    <div class="col-lg mt-3">
+        {% block title_form %}
+            <h2>Cadastro</h2>
+            <p>
+                Caso ainda não tenha cadastro, utilize o formulário a seguir para se cadastra
+            </p>
+        {% endblock title_form %}
         <form action="" method="post">
             {% csrf_token %}
             {{ userform|crispy }}
+
             <br><br>
-            <h2>Perfil</h2>
+            <h3>Perfil</h3>
             {{ perfilform|crispy }}
-            {% if enderecoform %}
-                <br><br>
-                <h2>Endereço</h2>
-                {{ enderecoform|crispy }}
-            {% endif %}
+
+            <br><br>
+            <h3>Endereço</h3>
+            {{ enderecoform|crispy }}
             <div class="row">
                 <div class="col">
                     <button type="submit" class='btn btn-primary btn-block btn-lg'>
