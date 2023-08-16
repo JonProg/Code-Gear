@@ -14,7 +14,7 @@
             </li>
             <li class="nav-item">
                 {% if request.user.is_authenticated %}
-                    <a class="nav-link" href="{% url 'perfil:update' %}">Perfil</a>
+                    <a class="nav-link" href="{% url 'perfil:adress' %}">Endereços</a>
                 {% endif %}
             </li>
             <li class="nav-item dropdown">
@@ -30,7 +30,13 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'perfil:create' %}">Cadastro/Login</a>
+                <a class="nav-link" href="{% url 'perfil:create' %}">
+                    {% if request.user.is_authenticated %}
+                        Perfil
+                    {% else %}
+                        Cadastro/Login
+                    {% endif %}
+                </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-cart-link active" href="{% url 'produto:carrinho' %}">

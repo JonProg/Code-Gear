@@ -14,19 +14,51 @@ class BasePerfil(View):
     def setup(self,*args, **kwargs):
         super().setup(*args, **kwargs)
 
+        self.perfil = None
+        self.endereco = None
         self.carrinho = copy.deepcopy(self.request.session.get('carrinho',{}))
 
-        self.contexto = {
-            'userform': forms.UserForm(
-                data = self.request.POST or None,
-            ),
-            'perfilform': forms.PerfilForm(
-                data = self.request.POST or None,
-            ),
-            'enderecoform':forms.EnderecoForm(
-                data = self.request.POST or None
-            ),
-        }
+        if self.request.user.is_authenticated:
+            self.perfil = models.PerfilUsuario.objects.filter(
+                usuario = self.request.user
+            ).first()
+
+            self.endereco = models.Endereco.objects.filter(
+                perfil_usuario = self.perfil
+            ).first()
+
+            self.contexto = {
+                'userform': forms.UserForm(
+                    data = self.request.POST or None,
+                    usuario = self.request.user,
+                    instance = self.request.user,
+                ),
+
+                'perfilform': forms.PerfilForm(
+                    data = self.request.POST or None,
+                    instance = self.perfil,
+                ),
+
+                'enderecoform':forms.EnderecoForm(
+                    data = self.request.POST or None,
+                    instance = self.endereco,
+                ),
+            }
+
+        else:
+            self.contexto = {
+                'userform': forms.UserForm(
+                    data = self.request.POST or None
+                ),
+
+                'perfilform': forms.PerfilForm(
+                    data = self.request.POST or None
+                ),
+
+                'enderecoform':forms.EnderecoForm(
+                    data = self.request.POST or None
+                ),
+            }
 
         self.userform = self.contexto['userform']
         self.perfilform = self.contexto['perfilform']
@@ -44,20 +76,55 @@ class Create(BasePerfil):
         if not all([self.userform.is_valid(), self.perfilform.is_valid(), self.enderecoform.is_valid()]):
             return self.renderizar
         
+        username = self.userform.cleaned_data.get('username')
         password = self.userform.cleaned_data.get('password')
-
-        usuario = self.userform.save(commit=False)
-        usuario.set_password(password)
-        usuario.save()
-
-        perfil = self.perfilform.save(commit=False)
-        perfil.usuario = usuario
-        perfil.save()
-
-        endereco = self.enderecoform.save(commit=False)
-        endereco.perfil_usuario = perfil
-        endereco.save()
+        email = self.userform.cleaned_data.get('email')
+        first_name = self.userform.cleaned_data.get('first_name')
+        last_name = self.userform.cleaned_data.get('last_name')
         
+        if self.request.user.is_authenticated:
+            usuario = get_object_or_404(
+                User, username = self.request.user.username
+            )
+
+            usuario.username = username
+
+            if password:
+                usuario.set_password(password)
+            
+            usuario.email = email
+            usuario.first_name = first_name
+            usuario.last_name = last_name
+            usuario.save()
+
+            if not self.perfil:
+                self.perfilform.cleaned_data['usuario'] = usuario
+                perfil = models.PerfilUsuario(**self.perfilform.cleaned_data)
+                perfil.save()
+
+            if not self.endereco:
+                self.enderecoform.cleaned_data['perfil_usuario'] = self.perfil
+                endereco = models.Endereco(**self.enderecoform.cleaned_data)
+                endereco.save()
+
+            else:
+                perfil = self.perfilform.save(commit=False)
+                perfil.usuario = usuario
+                perfil.save()
+
+        else:
+            usuario = self.userform.save(commit=False)
+            usuario.set_password(password)
+            usuario.save()
+
+            perfil = self.perfilform.save(commit=False)
+            perfil.usuario = usuario
+            perfil.save()
+
+            endereco = self.enderecoform.save(commit=False)
+            endereco.perfil_usuario = perfil
+            endereco.save()
+            
         if password:
             autentica = authenticate(
                 self.request,
@@ -72,7 +139,8 @@ class Create(BasePerfil):
         self.request.session.save()
         return self.renderizar
 
-class Update(BasePerfil):
+
+class Enderecos(View):
     pass
 
 class Delete(View):

@@ -3,26 +3,38 @@
 {% block conteudo %}
 
 <div class="row">
+    {% if not request.user.is_authenticated %}
+        <div class="col-lg">
+            <h1>Login</h1>
+        </div>
+    {% endif %}
     <div class="col-lg">
-        <h1>Login</h1>
-    </div>
-    <div class="col-lg">
-        <h1>Cadastro</h1>
+        {% if request.user.is_authenticated %}
+            <h1>Atualizar Usuário/Perfil</h1>
+            <br><br>
+        <h2>Usuário</h2>
+        {% else %}
+            <h1>Cadastro</h1>
+        {% endif %}
         <form action="" method="post">
             {% csrf_token %}
             {{ userform|crispy }}
-            <br>
+            <br><br>
             <h2>Perfil</h2>
             {{ perfilform|crispy }}
             {% if enderecoform %}
-                <br>
+                <br><br>
                 <h2>Endereço</h2>
                 {{ enderecoform|crispy }}
             {% endif %}
             <div class="row">
                 <div class="col">
                     <button type="submit" class='btn btn-primary btn-block btn-lg'>
-                        Enviar
+                        {% if request.user.is_authenticated %}
+                            Atualizar
+                        {% else %}
+                            Enviar
+                        {% endif %}
                     </button>
                 </div>
             </div>
