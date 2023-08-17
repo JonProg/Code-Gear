@@ -152,10 +152,6 @@ class Create(BasePerfil):
             'Seu cadastro foi criado ou atualizado com sucesso \(0_0*)/'
         )
 
-        messages.success(
-            self.request,
-            'Você fez login e pode concluir sua compra.'
-        )
         return redirect('perfil:create')
 
 
@@ -166,7 +162,37 @@ class Delete(View):
     pass
 
 class Login(View):
-    pass
+    def post(self,*args, **kwargs):
+        username = self.request.POST.get('username')
+        password = self.request.POST.get('password')
+
+        usuario = authenticate(
+                self.request,
+                username=username,
+                password=password,
+            )
+
+        if not username or not password or not usuario:
+            messages.error(
+            self.request,
+            'Usuário ou senha inválidos.'
+            )
+            return redirect('perfil:create')
+        
+        login(self.request, user=usuario)
+
+        messages.success(
+            self.request,
+            'Você fez login e pode concluir sua compra.'
+        )
+
+        return redirect('produto:carrinho')
+
+
+        
+        
+
+
 
 class Logout(View):
     def get(self, *args, **kwargs):
