@@ -139,4 +139,13 @@ class Carrinho(ListView):
         return render(self.request, 'produto/carrinho.html', context)
 
 class ResumoCompra(View):
-    pass
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('perfil:create')
+    
+        contexto = {
+            'usuario': self.request.user,
+            'carrinho': self.request.session['carrinho']
+        }
+
+        return render(self.request, 'produto/resumo_compra.html', contexto)

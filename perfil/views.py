@@ -187,13 +187,7 @@ class Login(View):
         )
 
         return redirect('produto:carrinho')
-
-
         
-        
-
-
-
 class Logout(View):
     def get(self, *args, **kwargs):
         carrinho = copy.deepcopy(self.request.session.get('carrinho',{}))
