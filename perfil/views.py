@@ -77,9 +77,12 @@ class BasePerfil(View):
 class Create(BasePerfil):
     def post(self, *args, **kwargs):
         if not all([self.userform.is_valid(), self.perfilform.is_valid(), self.enderecoform.is_valid()]):
+            messages.error(
+            self.request,
+            'Existem erros no formulário de cadastro. Verifique se todos os campos foram prenchidos corretamente.'
+            )
             return self.renderizar
         
-        type_created = ''
         username = self.userform.cleaned_data.get('username')
         password = self.userform.cleaned_data.get('password')
         email = self.userform.cleaned_data.get('email')
@@ -147,12 +150,13 @@ class Create(BasePerfil):
         
         self.request.session['carrinho'] = self.carrinho
         self.request.session.save()
+        
         messages.success(
             self.request,
             'Seu cadastro foi criado ou atualizado com sucesso \(0_0*)/'
         )
 
-        return redirect('perfil:create')
+        return redirect('produto:carrinho')
 
 
 class Enderecos(View):
