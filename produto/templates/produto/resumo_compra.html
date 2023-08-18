@@ -1,46 +1,64 @@
-<div class="row mb-5">
-    <div class="col-lg">
-        <h2>Resumo da sua compra</h2>
+{% extends 'base.html' %}
 
-        <p class="lead">Dados do usuário</p>
-        <p>Caso precise editar, <a href="/userprofile/update/">clique aqui</a></p>
-        <dl class="row">
-            <dt class="col-lg-2">Nome:</dt>
-            <dd class="col-lg-4">John</dd>
-            <dt class="col-lg-2">Sobrenome:</dt>
-            <dd class="col-lg-4">Caralho</dd>
+{% block conteudo %}
+    <div class="row mb-5">
+        <div class="col-lg">
+            <h2>Resumo da sua compra</h2>
 
-            <dt class="col-lg-2">Idade:</dt>
-            <dd class="col-lg-4">55</dd>
-            <dt class="col-lg-2">Nascimento:</dt>
-            <dd class="col-lg-4">30 de Abril de 1898</dd>
+            <p class="lead">Dados do usuário</p>
+            <p>Caso precise editar, <a href="/userprofile/update/">clique aqui</a></p>
+            <dl class="row">
+                <dt class="col-lg-2">Nome:</dt>
+                <dd class="col-lg-4">John</dd>
+                <dt class="col-lg-2">Sobrenome:</dt>
+                <dd class="col-lg-4">Caralho</dd>
 
-            <dt class="col-lg-2">CPF:</dt>
-            <dd class="col-lg-4">11111111111</dd>
-            <dt class="col-lg-2">E-mail:</dt>
-            <dd class="col-lg-4">email@gmail.com</dd>
-        </dl>
+                <dt class="col-lg-2">Idade:</dt>
+                <dd class="col-lg-4">55</dd>
+                <dt class="col-lg-2">Nascimento:</dt>
+                <dd class="col-lg-4">30 de Abril de 1898</dd>
 
-        <p class="lead">Dados de endereço</p>
-        <p>Caso precise editar, <a href="#">clique aqui</a></p>
-        <dl class="row">
-            <dt class="col-lg-2">Endereço:</dt>
-            <dd class="col-lg-4">Av. Filho Junior</dd>
-            <dt class="col-lg-2">Número:</dt>
-            <dd class="col-lg-4">12</dd>
+                <dt class="col-lg-2">CPF:</dt>
+                <dd class="col-lg-4">11111111111</dd>
+                <dt class="col-lg-2">E-mail:</dt>
+                <dd class="col-lg-4">email@gmail.com</dd>
+            </dl>
 
-            <dt class="col-lg-2">Complemento:</dt>
-            <dd class="col-lg-4">Casa</dd>
-            <dt class="col-lg-2">Nascimento:</dt>
-            <dd class="col-lg-4">Centro</dd>
+            <p class="lead">Dados de endereço</p>
+            <p>Caso precise editar, <a href="#">clique aqui</a></p>
+            <dl class="row">
+                <dt class="col-lg-2">Endereço:</dt>
+                <dd class="col-lg-4">Av. Filho Junior</dd>
+                <dt class="col-lg-2">Número:</dt>
+                <dd class="col-lg-4">12</dd>
 
-            <dt class="col-lg-2">Cidade:</dt>
-            <dd class="col-lg-4">São Paulo</dd>
-            <dt class="col-lg-2">Estado:</dt>
-            <dd class="col-lg-4">SP</dd>
+                <dt class="col-lg-2">Complemento:</dt>
+                <dd class="col-lg-4">Casa</dd>
+                <dt class="col-lg-2">Nascimento:</dt>
+                <dd class="col-lg-4">Centro</dd>
 
-            <dt class="col-lg-2">CEP:</dt>
-            <dd class="col-lg-4">00000000</dd>
-        </dl>
+                <dt class="col-lg-2">Cidade:</dt>
+                <dd class="col-lg-4">São Paulo</dd>
+                <dt class="col-lg-2">Estado:</dt>
+                <dd class="col-lg-4">SP</dd>
+
+                <dt class="col-lg-2">CEP:</dt>
+                <dd class="col-lg-4">00000000</dd>
+            </dl>
+        </div>
     </div>
-</div>
+
+    <div class='row'>
+        <div class="col">
+            <h3>Carrinho de compras</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-block btn-primary btn-lg" href="{% url 'pedido:salvarpedido' %}">
+                Realizar pedido e pagar
+            </a>
+        </div>
+    </div>
+{% endblock conteudo %}
