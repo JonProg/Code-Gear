@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.shortcuts import resolve_url, redirect, get_object_or_404, render
 from django.contrib import messages
 from django.views import View
+from perfil.models import PerfilUsuario
 from . import models
 
 class ListaProdutos(ListView):
@@ -141,6 +142,15 @@ class Carrinho(ListView):
 class ResumoCompra(View):
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
+            return redirect('perfil:create')
+        
+        perfil = PerfilUsuario.objects.filter(usuario = self.request.user).exists()
+
+        if not perfil:
+            messages.error(
+                self.request,
+                'Usuário sem perfil (-_-*)'
+            )
             return redirect('perfil:create')
 
         contexto = {
