@@ -45,7 +45,7 @@
                 <a class="nav-link nav-cart-link active" href="{% url 'produto:carrinho' %}">
                     {% if request.session.carrinho %}
                         <span class="nav-cart-count mr-1">
-                            <strong>{{ request.session.carrinho | qtd_total}}x</strong>
+                            <span class="text-light"><strong>{{ request.session.carrinho | qtd_total}}x</strong></span>
                         </span>
                     {% endif %}
                     <span class="nav-cart-icon mr-2" style="color: white;">
