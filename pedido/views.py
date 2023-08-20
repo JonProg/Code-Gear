@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import redirect, resolve_url
 from django.views.generic import DetailView
 from django.views import View
-from django.http import HttpResponse
 from django.contrib import messages
 from produto.models import Variacao
 from utils import functions
@@ -75,42 +74,37 @@ class SalvarPedido(View):
                 self.request.session.save()
                 return redirect('produto:carrinho')
             
-            qtd_total_carrinho = functions.cart_total_qtd(carrinho)
-            valor_total_carrinho = functions.cart_total(carrinho)
+        qtd_total_carrinho = functions.cart_total_qtd(carrinho)
+        valor_total_carrinho = functions.cart_total(carrinho)
 
-            pedido = Pedido(
-                usuario = self.request.user,
-                total = valor_total_carrinho,
-                qtd_total = qtd_total_carrinho,
-                status = 'C',
-            )
+        pedido = Pedido(
+            usuario = self.request.user,
+            total = valor_total_carrinho,
+            qtd_total = qtd_total_carrinho,
+            status = 'C',
+        )
 
-            pedido.save()
+        pedido.save()
 
-            ItemPedido.objects.bulk_create(
-                [
-                    ItemPedido(
-                        pedido = pedido,
-                        produto = v['produto_nome'],
-                        produto_id = v['produto_id'],
-                        variacao = v['variacao_nome'],
-                        variacao_id = v['variacao_id'],
-                        preco = v['preco_quantitativo'],
-                        preco_promocional = v['preco_quantitativo_promocional'],
-                        quantidade = v['quantidade'],
-                        imagem = v['imagem'],
+        ItemPedido.objects.bulk_create(
+            [
+                ItemPedido(
+                    pedido = pedido,
+                    produto = v['produto_nome'],
+                    produto_id = v['produto_id'],
+                    variacao = v['variacao_nome'],
+                    variacao_id = v['variacao_id'],
+                    preco = v['preco_quantitativo'],
+                    preco_promocional = v['preco_quantitativo_promocional'],
+                    quantidade = v['quantidade'],
+                    imagem = v['imagem'],
 
-                    ) for v in carrinho.values()
-                ]
-            )
+                ) for v in carrinho.values()
+            ]
+        )
 
-        del self.request.session.get['carrinho']
-        return redirect(
-            resolve_url(
-                'pedido:pagar',
-                kwargs={'pk':pedido.pk}
-                )
-            )
+        del self.request.session['carrinho']
+        return redirect('pedido:pagar',pedido.pk)
 
 class Lista(View):
     pass

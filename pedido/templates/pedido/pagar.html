@@ -1,82 +1,56 @@
 {% extends 'base.html' %}
-{% load filters %}
-{% block conteudo %}
 {% load static %}
-<div class="row">
-    <div class="col">
-        <h3>Escolha o método de pagamento</h3>
-        <p>Para o desenvolvedor: adicione seu método de pagamento preferido.</p>
+{% load filters %}
+
+{% block conteudo %}
+    <div class="row">
+        <div class="col">
+            <h3>Escolha o método de pagamento</h3>
+            <p>Para o desenvolvedor: adicione seu método de pagamento preferido.</p>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col">
-        <div class="container">
-            <h1>Formulário de Pagamento</h1>
-            <form>
-                <div class="form-group">
-                <label for="nome">Nome do Cartão</label>
-                    <input type="text" class="form-control" id="nome" placeholder="Digite o nome no cartão">
-                </div>
-                <div class="form-group">
-                    <label for="numero">Número do Cartão</label>
-                    <input type="text" class="form-control" id="numero" placeholder="Digite o número do cartão">
-                </div>
-                <div class="form-row">
-                    <div class="col">
-                        <label for="validade">Validade</label>
-                        <input type="text" class="form-control" id="validade" placeholder="MM/AA">
-                    </div>
-                    <div class="col">
-                        <label for="cvv">CVV</label>
-                        <input type="text" class="form-control" id="cvv" placeholder="Digite o CVV">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Pagar</button>
-            </form>
+
+    <div class="row mt-4">
+        <div class="col">
+            <h3>Produtos</h3>
         </div>
+    </div>
+    <div class="table-responsive mt-3">
+        <table class="table">
+            <tr>
+                <th class="d-none d-lg-block">Imagem</th>
+                <th>Produto</th>
+                <th>V.</th>
+                <th>QTD.</th>
+                <th>Total</th>
+            </tr>
 
-        <div class="row mt-4">
-            <div class="col">
-                <h3>Produtos</h3>
-            </div>
-        </div>
-
-        <div class="table-responsive mt-3">
-            <table class="table">
+            {% for linha in pedido.itempedido_set.all %}
                 <tr>
-                    <th class="d-none d-lg-block">Imagem</th>
-                    <th>Produto</th>
-                    <th>V.</th>
-                    <th>QTD.</th>
-                    <th>Total</th>
+                    <td class="d-none d-lg-block">
+                        <img class="cart-img" src="{% get_media_prefix %}{{ linha.imagem }}">
+                    </td>
+                    <td>{{ linha.produto_nome }}</td>
+                    <td>{{ linha.variacao }}</td>
+                    <td>{{ linha.quantidade }}</td>
+                    <td>
+                        {% if linha.preco_promocional %}
+                            {{ linha.preco_promocional | formata_preco }}
+                        {% else %}
+                            {{ linha.preco | formata_preco }}
+                        {% endif %}
+                    </td>
                 </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-                {% for linha in pedido.itempedido._set.all %}
-                    <tr>
-                        <td class="d-none d-lg-block">
-                            <img class="cart-img" src="{% get_media_prefix %}{{ item.imagem }}">
-                        </td>
-                        <td>{{ linha.produto_nome }}</td>
-                        <td>{{ linha.variacao }}</td>
-                        <td>{{ linha.quantidade }}</td>
-                        <td>
-                            {% if linha.preco_promocional %}
-                                {{ linha.preco_promocional | formata_preco }}
-                            {% else %}
-                                {{ linha.preco | formata_preco }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </table>
+    <div class="row mt-4">
+        <div class="col">
+            <a href="#" class="btn btn-warning btn-block btn-lg">Pagar</a>
         </div>
-
-        <div class="row mt-4">
-            <div class="col">
-                <a href="#" class="btn btn-primary btn-block btn-lg">Pagar</a>
-            </div>
-        </div>
+    </div>
 
 
     </div>
