@@ -4,6 +4,8 @@ from django.views import View
 from django.http import HttpResponse
 from django.contrib import messages
 from produto.models import Variacao
+from utils import functions
+from .models import Pedido, ItemPedido
 
 
 class Pagar(View):
@@ -32,17 +34,70 @@ class Pagar(View):
         )
 
         for variacao in bd_variacoes:
-            vid = variacao.id
+            vid = str(variacao.id)
             estoque = variacao.estoque
             qtd_carrinho = carrinho[vid]['quantidade']
+            preco_unt = carrinho[vid]['preco_unitario']
+            preco_unt_promo = carrinho[vid]['preco_unitario_promocional']
+            error_msg = ''
 
-        contexto = {
+            if estoque < qtd_carrinho:
+                carrinho[vid]['quantidade'] = estoque
+                carrinho[vid]['preco_quantitativo'] = estoque * preco_unt
+                carrinho[vid]['preco_quantitativo_promocional'] = estoque * preco_unt_promo
 
-        }
+                error_msg = 'Estoque insuficiente para alguns produtos do seu carrinho (ಥ﹏ಥ). '\
+                    'Reduzimos a quantidade desses produtos. Por favor, verifique '\
+                    'quais produtos foram afetados a seguir.'
 
-        return render(self.request, self.template_name, contexto)
+            if error_msg:
+                messages.error(
+                    self.request,
+                    error_msg
+                )
+                self.request.session.save()
+                return redirect('produto:carrinho')
+            
+            qtd_total_carrinho = functions.cart_total_qtd(carrinho)
+            valor_total_carrinho = functions.cart_total(carrinho)
+
+            pedido = Pedido(
+                usuario = self.request.user,
+                total = valor_total_carrinho,
+                qtd_total = qtd_total_carrinho,
+                status = 'C',
+            )
+
+            pedido.save()
+
+            ItemPedido.objects.bulk_create(
+                [
+                    ItemPedido(
+                        pedido = pedido,
+                        produto = v['produto_nome'],
+                        produto_id = v['produto_id'],
+                        variacao = v['variacao_nome'],
+                        variacao_id = v['variacao_id'],
+                        preco = v['preco_quantitativo'],
+                        preco_promocional = v['preco_quantitativo_promocional'],
+                        quantidade = v['quantidade'],
+                        imagem = v['imagem'],
+
+                    ) for v in carrinho.values()
+                ]
+            )
+
+        del self.request.session.get['carrinho']
+        #return render(self.request, self.template_name)
+        #redendizar pagina de pagamento via pix ou boleto
+        return redirect('pedido:lista')
+
+
 
 class SalvarPedido(View):
+    pass
+
+class Lista(View):
     pass
 
 class Detalhe(DetailView):
