@@ -9,6 +9,10 @@ from .models import Pedido, ItemPedido
 
 
 class Pagar(View):
+    pass
+
+
+class SalvarPedido(View):
     template_name = 'pedido/pagar.html'
 
     def get(self, *args, **kwargs):
@@ -90,12 +94,7 @@ class Pagar(View):
         del self.request.session.get['carrinho']
         #return render(self.request, self.template_name)
         #redendizar pagina de pagamento via pix ou boleto
-        return redirect('pedido:lista')
-
-
-
-class SalvarPedido(View):
-    pass
+        return redirect('pedido:pagar')
 
 class Lista(View):
     pass
