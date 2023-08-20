@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
 from django.views.generic import DetailView
 from django.views import View
 from django.http import HttpResponse
@@ -7,14 +7,27 @@ from produto.models import Variacao
 from utils import functions
 from .models import Pedido, ItemPedido
 
+class DispatchLoginRequired(View):
+    def dispatch(self, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('perfil:create')
 
-class Pagar(View):
-    pass
+        return super().dispatch(*args, **kwargs)
+
+class Pagar(DispatchLoginRequired, DetailView):
+    #redendizar pagina de pagamento via pix ou boleto
+    template_name = 'pedido/pagar.html'
+    model = Pedido
+    pk_url_kwarg = 'pk'
+    context_object_name = 'pedido'
+
+    def get_queryset(self, *args, **kwargs):
+        qs= super().get_queryset(*args, **kwargs)
+        qs= qs.filter(usuario = self.request.user)
+        return qs
 
 
 class SalvarPedido(View):
-    template_name = 'pedido/pagar.html'
-
     def get(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
             messages.error(
@@ -92,9 +105,12 @@ class SalvarPedido(View):
             )
 
         del self.request.session.get['carrinho']
-        #return render(self.request, self.template_name)
-        #redendizar pagina de pagamento via pix ou boleto
-        return redirect('pedido:pagar')
+        return redirect(
+            resolve_url(
+                'pedido:pagar',
+                kwargs={'pk':pedido.pk}
+                )
+            )
 
 class Lista(View):
     pass
