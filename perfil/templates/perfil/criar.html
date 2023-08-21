@@ -2,6 +2,8 @@
 {% load crispy_forms_tags %}
 {% block conteudo %}
 
+{% block title %}CodeGear | Criar/Entrar{% endblock title%}
+
 <div class="row">
     {% if not request.user.is_authenticated %}
         <div class="col-lg mt-3">

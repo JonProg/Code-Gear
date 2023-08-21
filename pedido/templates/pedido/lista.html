@@ -2,9 +2,11 @@
 {% load filters %}
 {% block conteudo %}
 
+{% block title %}Pedidos | {{ request.user.username }}{% endblock title%}
+
 <div class="row">
     <div class="col">
-        <h3 class="mb-4">Pedidos de luizotavio</h3>
+        <h3 class="mb-4">Pedidos de {{ request.user.username }}</h3>
         <p>Abaixo todos os seus pedidos realizados na loja.</p>
 
         <div class="table-responsive">
@@ -25,7 +27,7 @@
                         <td>{{ pedido.get_status_display }}</td>
                         <td>
                             <a href="{% url 'pedido:detalhe' pedido.pk %}">
-                                Ver <i class="fas fa-search-plus ml-2 bg-warning"></i>
+                                Ver <i class="fas fa-search-plus ml-2 text-warning"></i>
                             </a>
                         </td>
                     </tr>

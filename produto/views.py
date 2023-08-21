@@ -24,6 +24,7 @@ class AddCarrinho(View):
             'HTTP_REFERER',
             resolve_url('produto:lista')
         )
+        
         variacao_id = self.request.GET.get('vid')
 
         if not variacao_id:

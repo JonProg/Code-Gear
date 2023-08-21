@@ -2,6 +2,8 @@
 {% load filters %}
 {% load static %}
 
+{% block title %}Detalhe | {{ pedido }}{% endblock title%}
+
 {% block conteudo %}
     {% include 'partials/_pedido.html' %}
 {% endblock conteudo %}
