@@ -1,29 +1,29 @@
 from django.shortcuts import redirect, resolve_url
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views import View
 from django.contrib import messages
 from produto.models import Variacao
 from utils import functions
 from .models import Pedido, ItemPedido
 
-class DispatchLoginRequired(View):
+class DispatchLoginRequiredMixin(View):#mixin pesquisar
     def dispatch(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return redirect('perfil:create')
 
         return super().dispatch(*args, **kwargs)
+    
+    def get_queryset(self, *args, **kwargs):
+        qs= super().get_queryset(*args, **kwargs)
+        qs= qs.filter(usuario = self.request.user)
+        return qs
 
-class Pagar(DispatchLoginRequired, DetailView):
+class Pagar(DispatchLoginRequiredMixin, DetailView):
     #redendizar pagina de pagamento via pix ou boleto
     template_name = 'pedido/pagar.html'
     model = Pedido
     pk_url_kwarg = 'pk'
     context_object_name = 'pedido'
-
-    def get_queryset(self, *args, **kwargs):
-        qs= super().get_queryset(*args, **kwargs)
-        qs= qs.filter(usuario = self.request.user)
-        return qs
 
 
 class SalvarPedido(View):
@@ -106,8 +106,10 @@ class SalvarPedido(View):
         del self.request.session['carrinho']
         return redirect('pedido:pagar',pedido.pk)
 
-class Lista(View):
-    pass
-
+class Lista(DispatchLoginRequiredMixin, ListView):
+    model = Pedido
+    context_object_name = 'pedidos'
+    template_name = 'pedido/lista.html'
+    paginate_by = 10
 class Detalhe(DetailView):
     pass

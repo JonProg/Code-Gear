@@ -24,6 +24,7 @@
                         Perfil
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'pedido:lista' %}">Pedidos</a>
                         <a class="dropdown-item" href="{% url 'perfil:create' %}">Atualizar</a>
                         <a class="dropdown-item" href="{% url 'perfil:logout' %}">Sair</a>
                     </div>
