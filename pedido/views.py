@@ -111,5 +111,11 @@ class Lista(DispatchLoginRequiredMixin, ListView):
     context_object_name = 'pedidos'
     template_name = 'pedido/lista.html'
     paginate_by = 10
-class Detalhe(DetailView):
-    pass
+    ordering = ['-id']
+
+class Detalhe(DispatchLoginRequiredMixin,DetailView):
+    model = Pedido
+    context_object_name = 'pedido'
+    template_name = 'pedido/detalhe.html'
+    pk_url_kwarg = 'pk'
+
