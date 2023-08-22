@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 from django.shortcuts import resolve_url, redirect, get_object_or_404, render
 from django.contrib import messages
+from django.db.models import Q
 from django.views import View
 from perfil.models import PerfilUsuario
 from . import models
@@ -169,3 +170,36 @@ class ResumoCompra(View):
         }
 
         return render(self.request, 'produto/resumo_compra.html', contexto)
+
+class Busca(ListaProdutos):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._search_value = ''
+    
+    def setup(self, request, *args, **kwargs):
+        self._search_value = request.GET.get('search', '').strip()
+        return super().setup(request, *args, **kwargs)
+    
+    def get_queryset(self, *args, **kwargs):
+        search_value = self._search_value
+        return super().get_queryset().filter(
+            Q(nome__icontains = search_value) |
+            Q(descricao_curta__icontains = search_value) |
+            Q(descricao_longa__icontains = search_value) 
+        )[:10]
+    
+    def get_context_data(self, **kwargs):
+        search_value = self._search_value
+        ctx = super().get_context_data(**kwargs)
+        ctx.update({
+            'search_value': search_value,
+        })
+        return ctx
+    
+    def get(self, request, *args, **kwargs):
+        if self._search_value == '':
+            return redirect('produto:lista')
+        return super().get(request, *args, **kwargs)
+
+        
+    
