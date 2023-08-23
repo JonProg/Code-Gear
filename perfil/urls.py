@@ -8,6 +8,8 @@ urlpatterns = [
     path('login/', views.Login.as_view(), name='login'),
     path('logout/', views.Logout.as_view(), name='logout'),
 
+
+    path('endereco/', views.Enderecos.as_view(), name='adress'),
     path('endereco/update/<int:pk>', views.EnderecoUpdate.as_view(), name='adress_update'),
     path('endereco/create', views.EnderecoCreate.as_view(), name='adress_create'),
     path('endereco/delete', views.EnderecoDelete.as_view(), name='adress_delete'),

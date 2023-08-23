@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.views.generic import ListView, DetailView
 from django.views import View
 from django.contrib import messages
@@ -205,14 +205,13 @@ class Enderecos(ListView):
 
 class EnderecoUpdate(DetailView):
     template_name = 'perfil/endereco_update.html'
-    pk_url_kwarg = 'pk'
-
 
     def setup(self,*args, **kwargs):
         super().setup(*args, **kwargs)
 
+        self.pk = kwargs['pk']
         self.endereco = models.Endereco.objects.filter(
-            perfil_usuario = self.perfil
+            pk = self.pk
         ).first()
 
         self.contexto = {
@@ -222,10 +221,52 @@ class EnderecoUpdate(DetailView):
             ),
         }
 
+        self.enderecoform = self.contexto['enderecoform']
+
+        self.renderizar = render(
+            self.request, self.template_name, self.contexto
+        )
+    
+    def post(self, *args, **kwargs):
+        self.endereco = self.enderecoform.save(commit=False)
+        self.endereco.save()
+
+        messages.success(
+            self.request,
+            f'{self.endereco} atualizado com sucesso !'
+        )
+        return redirect('perfil:adress')
+
+
+    def get(self,*args, **kwargs):
+        return self.renderizar
+
 class EnderecoCreate(View):
     pass
 
 class EnderecoDelete(View):
-    pass
+    def get(self, *args, **kwargs):
+        http_referer = self.request.META.get(
+            'HTTP_REFERER',
+            redirect('perfil:adress')
+        )
+
+        adress_id = self.request.GET.get('vid')
+
+        self.endereco = models.Endereco.objects.filter(
+            pk = adress_id
+        ).first()
+
+        if not adress_id:
+            return redirect(http_referer)
+        
+        self.endereco.delete()
+
+        messages.info(
+            self.request,
+            f'{self.endereco} excluido dos seus endereços'
+        )
+
+        return http_referer
 
 

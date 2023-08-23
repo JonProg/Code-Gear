@@ -10,14 +10,15 @@
                 <th>Cidade</th>
                 <th>Estado</th>
                 <th>CEP</th>
+                <th>Atualização</th>
             </tr>
             {% for endereco in enderecos %}
                 <tr>
                     <td>
-                        <a href="#">
+                        <a href="{% url 'perfil:adress_update' endereco.pk %}">
                             {{ endereco }}
                         </a>
-                        <a class="ml-3" href="#">
+                        <a class="ml-3" href="{% url 'perfil:adress_delete' %}?vid={{ endereco.id }}">
                             <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -25,8 +26,8 @@
                     <td>{{ endereco.estado }}</td>
                     <td>{{ endereco.cep }}</td>
                     <td>
-                        <a href="{% url 'perfil:adress_update' endereco.pk %}">
-                            Editar
+                        <a class="text-info" href="{% url 'perfil:adress_update' endereco.pk %}">
+                            Atualizar
                         </a>
                     </td>
                 </tr>
@@ -34,7 +35,7 @@
         </table>
     </div>
 
-    <a class="btn btn-lg btn-block btn-warning" href="{% url 'produto:resumocompra' %}">
+    <a class="btn btn-lg btn-block btn-warning" href="{% url 'perfil:adress_create' %}">
         Adicionar Endereço
     </a>
 {% endblock conteudo %}
