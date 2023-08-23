@@ -1,28 +1,35 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
-
-{% block title %}CodeGear | Enderecos{% endblock title%}
+{% load static %}
+{% load filters %}
 
 {% block conteudo %}
-
-<div class="row">
-    <div class="col-lg">
-        <h2>Atualizar Cadastro</h2>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ userform|crispy }}
-            <h2>Atualizar Perfil</h2>
-            {{ perfilform|crispy }}
-            <div class="row">
-                <div class="col">
-                    <button type="submit" class='btn btn-primary btn-block btn-lg'>
-                        Atualizar
-                    </button>
-                </div>
-            </div>
-        </form>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>Endereço</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>CEP</th>
+            </tr>
+            {% for endereco in enderecos %}
+                <tr>
+                    <td>
+                        <a href="#">
+                            {{ endereco }}
+                        </a>
+                        <a class="ml-3" href="#">
+                            <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>{{ endereco.cidade }}</td>
+                    <td>{{ endereco.estado }}</td>
+                    <td>{{ endereco.cep }}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
-</div>
 
-
+    <a class="btn btn-lg btn-block btn-warning" href="{% url 'produto:resumocompra' %}">
+        Adicionar Endereço
+    </a>
 {% endblock conteudo %}

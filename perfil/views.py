@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import ListView
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -159,8 +160,13 @@ class Create(BasePerfil):
         return redirect('produto:carrinho')
 
 
-class Enderecos(View):
-    pass
+class Enderecos(ListView):
+    def get(self, *args,**kwargs):
+        perfil = models.PerfilUsuario.objects.get(usuario__username=self.request.user)
+        context = {
+            'enderecos': models.Endereco.objects.filter(perfil_usuario = perfil)
+            }
+        return render(self.request, 'perfil/enderecos.html', context)
 
 class Delete(View):
     pass
