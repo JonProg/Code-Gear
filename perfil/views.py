@@ -159,18 +159,6 @@ class Create(BasePerfil):
 
         return redirect('produto:carrinho')
 
-
-class Enderecos(ListView):
-    def get(self, *args,**kwargs):
-        perfil = models.PerfilUsuario.objects.get(usuario__username=self.request.user)
-        context = {
-            'enderecos': models.Endereco.objects.filter(perfil_usuario = perfil)
-            }
-        return render(self.request, 'perfil/enderecos.html', context)
-
-class Delete(View):
-    pass
-
 class Login(View):
     def post(self,*args, **kwargs):
         username = self.request.POST.get('username')
@@ -205,5 +193,23 @@ class Logout(View):
         self.request.session['carrinho'] = carrinho
         self.request.session.save()
         return redirect('produto:lista')
+
+
+class Enderecos(ListView):
+    def get(self, *args,**kwargs):
+        perfil = models.PerfilUsuario.objects.get(usuario__username=self.request.user)
+        context = {
+            'enderecos': models.Endereco.objects.filter(perfil_usuario = perfil)
+            }
+        return render(self.request, 'perfil/enderecos.html', context)
+
+class EnderecoUpdate():
+    pass
+
+class EnderecoCreate():
+    pass
+
+class EnderecoDelete(View):
+    pass
 
 
