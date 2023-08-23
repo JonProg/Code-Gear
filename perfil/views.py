@@ -201,10 +201,22 @@ class Enderecos(ListView):
         context = {
             'enderecos': models.Endereco.objects.filter(perfil_usuario = perfil)
             }
-        return render(self.request, 'perfil/enderecos.html', context)
+        return render(self.request, 'perfil/lista_enderecos.html', context)
 
 class EnderecoUpdate():
-    pass
+    def setup(self,*args, **kwargs):
+        super().setup(*args, **kwargs)
+
+        self.endereco = models.Endereco.objects.filter(
+            perfil_usuario = self.perfil
+        ).first()
+
+        self.contexto = {
+            'enderecoform':forms.EnderecoForm(
+                data = self.request.POST or None,
+                instance = self.endereco,
+            ),
+        }
 
 class EnderecoCreate():
     pass

@@ -24,6 +24,11 @@
                     <td>{{ endereco.cidade }}</td>
                     <td>{{ endereco.estado }}</td>
                     <td>{{ endereco.cep }}</td>
+                    <td>
+                        <a href="{% url 'perfil:adress_update' endereco.pk %}">
+                            Editar
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
