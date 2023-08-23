@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.views import View
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -203,7 +203,11 @@ class Enderecos(ListView):
             }
         return render(self.request, 'perfil/lista_enderecos.html', context)
 
-class EnderecoUpdate():
+class EnderecoUpdate(DetailView):
+    template_name = 'perfil/endereco_update.html'
+    pk_url_kwarg = 'pk'
+
+
     def setup(self,*args, **kwargs):
         super().setup(*args, **kwargs)
 
@@ -218,7 +222,7 @@ class EnderecoUpdate():
             ),
         }
 
-class EnderecoCreate():
+class EnderecoCreate(View):
     pass
 
 class EnderecoDelete(View):

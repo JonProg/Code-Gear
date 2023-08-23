@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block conteudo %}
+
+{% block title %}CodeGear | Atualizar Endereço{% endblock title%}
+
+<div class="row">
+    <div class="col-lg mt-3">
+        {% block title_form %}
+            <h2>Atualizar Endereço</h2>
+        {% endblock title_form %}
+        <form action="" method="post">
+            {{ enderecoform|crispy }}
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class='btn btn-primary btn-block btn-lg'>
+                        {% if request.user.is_authenticated %}
+                            Atualizar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock conteudo %}
