@@ -203,6 +203,7 @@ class Enderecos(ListView):
             }
         return render(self.request, 'perfil/lista_enderecos.html', context)
 
+
 class EnderecoUpdate(DetailView):
     template_name = 'perfil/endereco_update.html'
 
@@ -219,6 +220,7 @@ class EnderecoUpdate(DetailView):
                 data = self.request.POST or None,
                 instance = self.endereco,
             ),
+            'mode':'Atualizar',
         }
 
         self.enderecoform = self.contexto['enderecoform']
@@ -249,8 +251,54 @@ class EnderecoUpdate(DetailView):
     def get(self,*args, **kwargs):
         return self.renderizar
 
+
 class EnderecoCreate(View):
-    pass
+    template_name = 'perfil/endereco_update.html'
+
+    def setup(self,*args, **kwargs):
+        super().setup(*args, **kwargs)
+
+        self.contexto = {
+            'enderecoform':forms.EnderecoForm(
+                data = self.request.POST or None,
+            ),
+            'mode':'Criar',
+
+        }
+
+        self.enderecoform = self.contexto['enderecoform']
+
+        self.renderizar = render(
+            self.request, self.template_name, self.contexto
+        )
+
+
+    def post(self, *args, **kwargs):
+
+        if not self.enderecoform.is_valid():
+            messages.error(
+            self.request,
+            'Existem erros no formulário de cadastro. Verifique se todos os campos foram prenchidos corretamente.'
+            )
+            return self.renderizar
+
+        self.perfil = models.PerfilUsuario.objects.filter(
+            usuario = self.request.user
+        ).first()
+
+        endereco = self.enderecoform.save(commit=False)
+        endereco.perfil_usuario = self.perfil
+        endereco.save()
+
+        messages.success(
+            self.request,
+            f'{endereco} criado com sucesso !'
+        )
+        return redirect('perfil:adress')
+    
+
+    def get(self,*args, **kwargs):
+        return self.renderizar
 
 class EnderecoDelete(View):
     def get(self, *args, **kwargs):
@@ -266,7 +314,10 @@ class EnderecoDelete(View):
         ).first()
 
         if models.Endereco.objects.first() == self.endereco:
-            pass
+            messages.error(
+                self.request,
+                f'O {self.endereco} não pode ser excluido'
+            )
 
         if not adress_id:
             return redirect(http_referer)

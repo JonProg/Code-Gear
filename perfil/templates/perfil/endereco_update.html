@@ -2,11 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block conteudo %}
-    {% block title %}CodeGear | Atualizar Endereço{% endblock title%}
+    {% block title %}CodeGear | Endereço{% endblock title%}
     <div class="row">
         <div class="col-lg mt-3 mb-11">
             {% block title_form %}
-                <h2>Atualizar Endereço</h2>
+                <h2>{{ mode }} Endereço</h2>
                 <br>
             {% endblock title_form %}
             <form action="" method="post">
@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col text-center">
                         <button type="submit" class='btn btn-warning btn-block btn-lg mt-5 mb-5'>
-                                Atualizar
+                            {{ mode }}
                         </button>
                     </div>
                 </div>
