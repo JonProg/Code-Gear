@@ -228,6 +228,14 @@ class EnderecoUpdate(DetailView):
         )
     
     def post(self, *args, **kwargs):
+
+        if not self.enderecoform.is_valid():
+            messages.error(
+            self.request,
+            'Existem erros no formulário de cadastro. Verifique se todos os campos foram prenchidos corretamente.'
+            )
+            return self.renderizar
+
         self.endereco = self.enderecoform.save(commit=False)
         self.endereco.save()
 
@@ -248,7 +256,7 @@ class EnderecoDelete(View):
     def get(self, *args, **kwargs):
         http_referer = self.request.META.get(
             'HTTP_REFERER',
-            redirect('perfil:adress')
+            resolve_url('perfil:adress')
         )
 
         adress_id = self.request.GET.get('vid')
@@ -256,6 +264,9 @@ class EnderecoDelete(View):
         self.endereco = models.Endereco.objects.filter(
             pk = adress_id
         ).first()
+
+        if models.Endereco.objects.first() == self.endereco:
+            pass
 
         if not adress_id:
             return redirect(http_referer)
@@ -267,6 +278,6 @@ class EnderecoDelete(View):
             f'{self.endereco} excluido dos seus endereços'
         )
 
-        return http_referer
+        return redirect(http_referer)
 
 

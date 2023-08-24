@@ -18,9 +18,11 @@
                         <a href="{% url 'perfil:adress_update' endereco.pk %}">
                             {{ endereco }}
                         </a>
-                        <a class="ml-3" href="{% url 'perfil:adress_delete' %}?vid={{ endereco.id }}">
-                            <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
-                        </a>
+                        {% if not forloop.first %}
+                            <a class="ml-3" href="{% url 'perfil:adress_delete' %}?vid={{ endereco.id }}">
+                                    <i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>{{ endereco.cidade }}</td>
                     <td>{{ endereco.estado }}</td>
