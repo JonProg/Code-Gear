@@ -3,7 +3,7 @@
 {% load filters %}
 
 {% block conteudo %}
-    <div class="table-responsive">
+    <div class="table-responsive mt-7">
         <table class="table">
             <tr>
                 <th>Endereço</th>
@@ -36,8 +36,9 @@
             {% endfor %}
         </table>
     </div>
-
-    <a class="btn btn-lg btn-block btn-warning" href="{% url 'perfil:adress_create' %}">
-        Adicionar Endereço
-    </a>
+    <div class="d-flex justify-content-center">
+        <a class="btn col-5 btn-lg btn-block btn-warning mt-5 mb-5" href="{% url 'perfil:adress_create' %}">
+            Adicionar Endereço
+        </a>
+    </div>
 {% endblock conteudo %}

@@ -26,7 +26,7 @@ class PerfilUsuario(models.Model):
 
         cpf_enviado = self.cpf or None
         cpf_salvo = None
-        perfil = PerfilUsuario.objects.filter(cpf = cpf_enviado)
+        perfil = PerfilUsuario.objects.filter(cpf = cpf_enviado).first()
 
         if perfil:
             cpf_salvo = perfil.cpf
