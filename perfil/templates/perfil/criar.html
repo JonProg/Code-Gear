@@ -20,7 +20,7 @@
                   <label for="InputPassword1">Senha</label>
                   <input type="password" name='password' class="form-control" id="InputPassword1" placeholder="Digite sua senha">
                 </div>
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Entrar</button>
+                <button type="submit" class="btn btn-warning btn-block btn-lg mt-4 mb-4">Entrar</button>
               </form>
         </div>
     {% endif %}
@@ -43,14 +43,19 @@
             <h3>Endereço</h3>
             {{ enderecoform|crispy }}
             <div class="row">
-                <div class="col d-flex justify-content-center">
-                    <button type="submit" class='btn col-6 btn-warning btn-block btn-lg mt-4 mb-4'>
-                        {% if request.user.is_authenticated %}
-                            Atualizar
-                        {% else %}
+                {% if request.user.is_authenticated %}
+                    <div class="col d-flex justify-content-center">
+                        <button type="submit" class='btn col-6 btn-warning btn-block btn-lg mt-4 mb-4'>
+                                Atualizar
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="col">
+                        <button type="submit" class='btn btn-warning btn-block btn-lg mt-4 mb-4'>
                             Enviar
-                        {% endif %}
-                    </button>
+                        </button>
+                    </div>
+                {% endif %}
                 </div>
             </div>
         </form>
