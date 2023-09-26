@@ -5,7 +5,7 @@
         "use": "@vercel/python"
       }
     ],
-    
+
     "routes": [
       {
         "src": "/(.*)",
@@ -14,7 +14,7 @@
 
     ],
     "static": {
-      "directory": "static"
+      "directory": "static/"
     }
     
 }
