@@ -154,7 +154,7 @@ class Create(BasePerfil):
         
         messages.success(
             self.request,
-            'Seu cadastro foi criado ou atualizado com sucesso \(0_0*)/'
+            'Seu cadastro foi criado com sucesso \(0_0*)/'
         )
 
         return redirect('produto:carrinho')
