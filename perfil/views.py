@@ -234,7 +234,7 @@ class EnderecoUpdate(DetailView):
         if not self.enderecoform.is_valid():
             messages.error(
             self.request,
-            'Existem erros no formulário de cadastro. Verifique se todos os campos foram prenchidos corretamente.'
+            'Existem erros no formulário de endereço. Verifique se todos os campos foram prenchidos corretamente.'
             )
             return self.renderizar
 
