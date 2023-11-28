@@ -25,6 +25,10 @@ class Pagar(DispatchLoginRequiredMixin, DetailView):
     pk_url_kwarg = 'pk'
     context_object_name = 'pedido'
 
+    def get(self, request, *args,**kwargs):
+        del self.request.session['carrinho']
+        return super().get(request, *args, **kwargs)
+
 
 class SalvarPedido(View):
     def get(self, *args, **kwargs):
@@ -103,7 +107,6 @@ class SalvarPedido(View):
             ]
         )
 
-        #del self.request.session['carrinho']
         return redirect('pedido:pagar',pedido.pk)
 
 class Lista(DispatchLoginRequiredMixin, ListView):
