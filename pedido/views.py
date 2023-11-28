@@ -103,7 +103,7 @@ class SalvarPedido(View):
             ]
         )
 
-        del self.request.session['carrinho']
+        #del self.request.session['carrinho']
         return redirect('pedido:pagar',pedido.pk)
 
 class Lista(DispatchLoginRequiredMixin, ListView):
