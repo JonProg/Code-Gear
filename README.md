@@ -1,5 +1,5 @@
 <h1>Code-Gear <img src="https://img.icons8.com/?size=30&id=XrEFnp33pJYw&format=png" width="27" height="27" align="center"></img></h1>
-
+O Code Gear é um e-commerce especializado em produtos tecnológicos, oferecendo um sistema abrangente que inclui funcionalidades de login/cadastro, gestão de endereços, carrinho de compras e outras características adicionais, as quais podem ser visualizadas nas imagens abaixo.
 
 ## Página Inicial
 
