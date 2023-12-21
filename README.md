@@ -1,4 +1,4 @@
-<h1>Code-Gear <img src="https://img.icons8.com/?size=30&id=XrEFnp33pJYw&format=png" width="27" height="27" align="center"></img></h1><br>
+<h1>Code-Gear <img src="https://img.icons8.com/?size=30&id=XrEFnp33pJYw&format=png" width="27" height="27" align="center"></img></h1>
 
 
 ## Página Inicial

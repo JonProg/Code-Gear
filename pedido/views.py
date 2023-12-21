@@ -19,7 +19,7 @@ class DispatchLoginRequiredMixin(View):#mixin pesquisar
         return qs
 
 class Pagar(DispatchLoginRequiredMixin, DetailView):
-    #redendizar pagina de pagamento via pix ou boleto
+    #redenrizar pagina de pagamento via pix ou boleto
     template_name = 'pedido/pagar.html'
     model = Pedido
     pk_url_kwarg = 'pk'
