@@ -26,7 +26,7 @@ load_dotenv(BASE_DIR / 'dotenv_files' / '.env', override=True)
 SECRET_KEY = os.getenv('SECRET_KEY', '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', '')
+DEBUG = os.getenv('DEBUG', False)
 
 ALLOWED_HOSTS = [
     h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',')
@@ -94,8 +94,12 @@ WSGI_APPLICATION = 'project.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE', 'change-me'),
+        'NAME': os.getenv('DB_NAME', 'change-me'),
+        'USER': os.getenv('DB_USER', 'change-me'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'change-me'),
+        'HOST': os.getenv('DB_HOST', 'change-me'),
+        'PORT': os.getenv('DB_PORT','change-me'),
     }
 }
 
