@@ -15,11 +15,11 @@ O Code Gear é um e-commerce especializado em produtos tecnológicos, oferecendo
 
 
 ## Lista de Endereços
-[![perfil-endereco.png](https://i.postimg.cc/rw5n07Jj/perfil-endereco.png)](https://postimg.cc/K1vrCqC3)<br><br>
+[![endereco.png](https://i.postimg.cc/d080YMcc/endereco.png)](https://postimg.cc/4KxG6S3W)
 
 
 ## Carrinho
-[![carrinho.png](https://i.postimg.cc/RZGPLKkJ/carrinho.png)](https://postimg.cc/WdF62Fbs)<br><br>
+[![carrinho.png](https://i.postimg.cc/tgTHBLRz/carrinho.png)](https://postimg.cc/Bjdy67K8)
 
 
 ## Resumo da Compra
