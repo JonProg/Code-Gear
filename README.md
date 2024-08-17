@@ -19,14 +19,14 @@ O Code Gear é um e-commerce especializado em produtos tecnológicos, oferecendo
 
 
 ## Carrinho
-[![carrinho.png](https://i.postimg.cc/tgTHBLRz/carrinho.png)](https://postimg.cc/Bjdy67K8)
+[![carrinho.png](https://i.postimg.cc/BvRdL4mC/carrinho.png)](https://postimg.cc/jWQ8B00W)
 
 
 ## Resumo da Compra
 [![resumocompra.png](https://i.postimg.cc/dQd4SbMY/resumocompra.png)](https://postimg.cc/F1ryYnsW)<br><br>
 
 ## Pagar a Compra
-[![payment.png](https://i.postimg.cc/CMGW1xQY/payment.png)](https://postimg.cc/DmzCpnhY)<br><br>
+[![payment.png](https://i.postimg.cc/nz7Nqg5f/payment.png)](https://postimg.cc/8JpySKNZ)<br><br>
 
 ## Login/Cadastro
 [![screencapture-127-0-0-1-8000-perfil-2023-08-30-11-35-32.png](https://i.postimg.cc/8CGx0S4J/screencapture-127-0-0-1-8000-perfil-2023-08-30-11-35-32.png)](https://postimg.cc/fVHHV16D)<br><br>
