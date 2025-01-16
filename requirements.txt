@@ -6,7 +6,7 @@ crispy-bootstrap4==2022.1
 Django==4.2.18
 django-crispy-forms==2.0
 idna==3.4
-pillow==10.2.0
+pillow==10.3.0
 psycopg2==2.9.9
 psycopg2-binary==2.9.9
 python-dotenv==1.0.0
